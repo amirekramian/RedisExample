@@ -1,6 +1,8 @@
 
 
 
+using RedisTest.Interfaces;
+using RedisTest.Services;
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Newtonsoft;
@@ -19,6 +21,8 @@ var redisConfiguration =builder.Configuration.GetSection("Redis").Get<RedisConfi
 builder.Services.AddStackExchangeRedisCache(options => { options.Configuration = redisConfiguration.Hosts[0].Host + ":" + redisConfiguration.Hosts[0].Port; });
 builder.Services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(redisConfiguration);
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IRedisOperations , RedisOperationService>();
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(
     ConnectionMultiplexer.Connect("localhost:6379")
